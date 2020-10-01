@@ -7,4 +7,5 @@ import java.io.BufferedReader;
 
 public interface ILoginService {
     public JsonObject validateUser(BufferedReader reader);
+    public JsonObject validateDetailMaster(String key);
 }

@@ -19,11 +19,13 @@ class Login extends Component {
         };
     }
 
+    /**Evento submit
+     * 
+     */
     handleSubmit = e =>{
         e.preventDefault();
         this.peticionPost()
     }
-    
 
 
     gmail = React.createRef();
@@ -38,11 +40,14 @@ class Login extends Component {
         }
     }
 
+    /**Metodo POST AXIOS
+     * Verificacion de credenciales de usuarios
+     */
+
     peticionPost = async ()=>{
         this.datos();
         await axios.post('http://localhost:7001/AS2_P2/api/login',this.sendDatos).then(response =>{
             this.setState(()=>this.loginState.dataItem  = response.data)
-            console.log(this.loginState.dataItem)
             if(this.loginState.dataItem.idUser === 0){
                 this.setState(()=>this.loginState.login = true)
                 console.log("error")
@@ -52,14 +57,12 @@ class Login extends Component {
                 this.setState(()=>this.loginState.loading = true)
                 this.setState(()=>this.loginState.formLoad = true)
                 this.props.history.push('/DetailMaster/'+this.loginState.dataItem.key)
-                
-                
             }
         }).catch(error =>{
             console.log(error)
         })
     }
-    
+
     render(){
         return(
             <div className="loginApp fadeInDown">

@@ -1,12 +1,10 @@
 package main.webapp.controller;
 
 import com.google.gson.Gson;
-import main.webapp.model.dao.ISaleDao;
-import main.webapp.model.dao.SaleDao;
-import main.webapp.model.service.ILoginService;
-import main.webapp.model.service.ISaleService;
-import main.webapp.model.service.LoginService;
-import main.webapp.model.service.SaleService;
+import main.webapp.model.dao.ArticleDao;
+import main.webapp.model.dao.IArticleDao;
+import main.webapp.model.entity.ArticleEntity;
+import main.webapp.model.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,20 +15,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(name="sale", urlPatterns = "api/sales")
-public class SaleController extends HttpServlet {
+@WebServlet(name = "detailMaster", urlPatterns = "/api/detailMaster")
+public class SaleDetailController extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        ILoginService service = new LoginService();
-        ISaleService serv = new SaleService();
+        Gson gson = new Gson();
+        IArticleDao dao = new ArticleDao();
+        ArticleEntity entity =dao.getArticle(Integer.parseInt(req.getParameter("idArticle")));
+        String json = gson.toJson(entity);
+        System.out.println(json);
 
         try(PrintWriter out = resp.getWriter()) {
-            if(req.getParameter("key")== null){
-                out.println(serv.listSales());
-            }else{
-                out.println(service.validateDetailMaster(req.getParameter("key")));
-            }
+            out.println(json);
         }
     }
 
@@ -38,28 +36,20 @@ public class SaleController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         BufferedReader reader = req.getReader();
-        ISaleService service = new SaleService();
-
+        IDetailMasterService detailMas = new DetailMasterService();
         try(PrintWriter out = resp.getWriter()) {
-            out.println(service.saveSale(reader));
+            out.println(detailMas.saveDetailMaster(reader));
         }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ISaleDao dao = new SaleDao();
-        try(PrintWriter out = resp.getWriter()) {
-            out.println(dao.deleteSale(req.getParameter("idSale")));
-        }
-    }
-
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         BufferedReader reader = req.getReader();
-        ISaleService service = new SaleService();
+        IDetailMasterService service = new DetailMasterService();
         try(PrintWriter out = resp.getWriter()) {
-            out.println(service.updateSale(reader));
+            out.println(service.deleteDetailM(req.getParameter("key"),Integer.parseInt(req.getParameter("idSaleDetail"))));
+            System.out.println(req.getParameter("key")+"HOLA"+req.getParameter("idSaleDetail"));
         }
     }
 }
