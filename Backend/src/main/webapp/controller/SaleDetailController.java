@@ -23,12 +23,17 @@ public class SaleDetailController extends HttpServlet {
         resp.setContentType("application/json");
         Gson gson = new Gson();
         IArticleDao dao = new ArticleDao();
-        ArticleEntity entity =dao.getArticle(Integer.parseInt(req.getParameter("idArticle")));
-        String json = gson.toJson(entity);
-        System.out.println(json);
 
         try(PrintWriter out = resp.getWriter()) {
-            out.println(json);
+            if(req.getParameter("idArticle")==null){
+                IDetailMasterService service = new DetailMasterService();
+                out.println(service.getListDetailM(req.getParameter("keySale")));
+            }else {
+                ArticleEntity entity =dao.getArticle(Integer.parseInt(req.getParameter("idArticle")));
+                String json = gson.toJson(entity);
+                out.println(json);
+            }
+
         }
     }
 
@@ -45,11 +50,9 @@ public class SaleDetailController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        BufferedReader reader = req.getReader();
         IDetailMasterService service = new DetailMasterService();
         try(PrintWriter out = resp.getWriter()) {
             out.println(service.deleteDetailM(req.getParameter("key"),Integer.parseInt(req.getParameter("idSaleDetail"))));
-            System.out.println(req.getParameter("key")+"HOLA"+req.getParameter("idSaleDetail"));
         }
     }
 }

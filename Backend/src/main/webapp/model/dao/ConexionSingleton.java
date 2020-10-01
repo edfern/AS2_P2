@@ -1,5 +1,8 @@
 package main.webapp.model.dao;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,13 +24,11 @@ public class ConexionSingleton {
     public void openConection() {
 
         try {
-            String urlConexion = "jdbc:mysql://192.185.4.65:3306/jbarilla_as2_equipo5?serverTimezone=UTC";
-            String usuario = "jbarilla_as2";
-            String contra = "agEO5ZTI.VC8";
-            connection = DriverManager.getConnection(urlConexion, usuario, contra);
+            InitialContext context = new InitialContext();
+            DataSource dataSource = (DataSource) context.lookup("jdbc/DBbarillas");
+            connection = dataSource.getConnection();
             System.out.println("Conexion eexitosa");
-        } catch ( SQLException e) {
-            //System.out.println(e);
+        } catch (SQLException | NamingException e) {
             closeConection();
         }
 

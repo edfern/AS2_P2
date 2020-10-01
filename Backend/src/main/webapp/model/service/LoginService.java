@@ -15,7 +15,6 @@ public class LoginService implements ILoginService {
     @Override
     public JsonObject validateUser(BufferedReader reader) {
 
-
         UserEntity entity = gson.fromJson(reader,UserEntity.class);
         IUserDao dao = new UserDao();
         UserEntity user = dao.getUser(entity.getGmail(),entity.getPassword(),entity.getKey());
@@ -28,7 +27,7 @@ public class LoginService implements ILoginService {
 
     @Override
     public JsonObject validateDetailMaster(String key) {
-        System.out.println(key);
+
         IUserDao dao = new UserDao();
         UserEntity user = dao.getUser("","",key);
         String json = gson.toJson(user);

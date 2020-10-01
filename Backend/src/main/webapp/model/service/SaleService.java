@@ -9,7 +9,6 @@ import main.webapp.model.dao.ISaleDao;
 import main.webapp.model.dao.SaleDao;
 import main.webapp.model.entity.ArticleEntity;
 import main.webapp.model.entity.DetailMasterEntity;
-import main.webapp.model.entity.SaleDetailEntity;
 import main.webapp.model.entity.SaleEntity;
 
 import java.io.BufferedReader;
@@ -43,14 +42,9 @@ public class SaleService implements ISaleService{
         Gson gson = new Gson();
         SaleEntity entity = gson.fromJson(reader, SaleEntity.class);
 
-        System.out.println(entity.getSaleTotal()+" hola "+entity.getIdSales());
-
         ISaleDao dao = new SaleDao();
         SaleEntity sale = dao.updateSale(entity);
-        System.out.println(sale.getNitCustomer());
         String json = gson.toJson(sale);
-
-        System.out.println(json);
 
         return new JsonParser().parse(json).getAsJsonObject();
     }
@@ -60,7 +54,7 @@ public class SaleService implements ISaleService{
         Gson gson = new Gson();
         ISaleDao dao = new SaleDao();
         List<SaleEntity> list = dao.getSales();
-        String json = gson.toJson(list);
-        return json;
+
+        return gson.toJson(list);
     }
 }

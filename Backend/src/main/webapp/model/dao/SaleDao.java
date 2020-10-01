@@ -20,7 +20,6 @@ public class SaleDao implements ISaleDao{
             String query = "insert into sales(idSale,customer, nitCustomer, dateSale, idUser, addressCustomer,totalSale) values(?,?,?,?,?,?,?) ";
             conexion.openConection();
 
-            System.out.println(query);
             pr = (PreparedStatement) conexion.connection.prepareStatement(query);
             pr.setString(1,entity.getIdSales());
             pr.setString(2,entity.getCustomer());
@@ -38,7 +37,6 @@ public class SaleDao implements ISaleDao{
             while (rs.next()){
                 setAttributes(rs,sale);
             }
-            conexion.closeConection();
 
         }catch (Exception e){
             System.out.println(e);
@@ -85,13 +83,10 @@ public class SaleDao implements ISaleDao{
 
             String query2="select * from sales where idSale='"+entity.getIdSales()+"'";
 
-            System.out.println(query2);
-
             ResultSet rs = conexion.connection.createStatement().executeQuery(query2);
             while (rs.next()){
                 setAttributes(rs,sale);
             }
-            conexion.closeConection();
         }catch (Exception e){
             System.out.println(e);
         }finally {
@@ -124,11 +119,8 @@ public class SaleDao implements ISaleDao{
 
     private void setAttributes(ResultSet rs, SaleEntity entity) throws SQLException {
         entity.setIdSales(rs.getString("idSale"));
-        System.out.println(entity.getIdSales());
         entity.setCustomer(rs.getString("customer"));
-        System.out.println(entity.getCustomer());
         entity.setNitCustomer(rs.getString("nitCustomer"));
-        System.out.println(entity.getNitCustomer());
         entity.setDateSale(rs.getString("dateSale"));
         entity.setIdUser(rs.getInt("idUser"));
         entity.setAddressCustomer(rs.getString("addressCustomer"));

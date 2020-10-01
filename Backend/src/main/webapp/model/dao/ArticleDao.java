@@ -35,7 +35,6 @@ public class ArticleDao implements IArticleDao {
         try {
             conexion.openConection();
             String query = "select * from articles where idArticle="+idArticle;
-            System.out.println(query);
             ResultSet rs = conexion.connection.createStatement().executeQuery(query);
             while (rs.next()){
                 setArticleEntity(rs, entity);

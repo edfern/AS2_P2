@@ -1,7 +1,6 @@
 package main.webapp.model.dao;
-
 import main.webapp.model.entity.UserEntity;
-import org.apache.catalina.User;
+
 
 import java.sql.ResultSet;
 
@@ -14,7 +13,7 @@ public class UserDao implements IUserDao {
         try {
             conexion.openConection();
             String query = "";
-            System.out.println(key);
+
             if(key == null){
                 query = "select * from cashiers where gmail = '"+gmail+"'"+" and password = "+"'"+pass+"'";
             }else {
@@ -38,21 +37,13 @@ public class UserDao implements IUserDao {
                 entity.setPassword(rs.getString("password"));
                 entity.setKey(rs.getString("key"));
             }
-            conexion.closeConection();
+
         }catch (Exception e){
             System.out.println(e);
             entity.setIdUser(0);
             entity.setFullName("User no encontrado");
             entity.setSurName("User no encontrado");
-            entity.setBirthday("User no encontrado");
-            entity.setTaxId("User no encontrado");
-            entity.setCivilStatus("User no encontrado");
-            entity.setGender("User no encontrado");
-            entity.setAddress("User no encontrado");
-            entity.setPhone("User no encontrado");
-            entity.setGmail("User no encontrado");
             entity.setUserName("User no encontrado");
-            entity.setPassword("User no encontrado");
         }
         finally {
             conexion.closeConection();

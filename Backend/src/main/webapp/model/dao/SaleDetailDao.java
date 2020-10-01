@@ -43,10 +43,7 @@ public class SaleDetailDao implements ISaleDetailDao {
             pr.setInt(1,idSaleDetail);
             pr.executeUpdate();
 
-            System.out.println(idSaleDetail+ "DELETE" + idSale);
-
             list = getList(idSale);
-            conexion.closeConection();
         }catch (Exception e){
             System.out.println(e);
         }finally {
@@ -54,7 +51,6 @@ public class SaleDetailDao implements ISaleDetailDao {
         }
         return list;
     }
-
 
     public List<SaleDetailEntity> getList(String idSale){
 
@@ -74,12 +70,11 @@ public class SaleDetailDao implements ISaleDetailDao {
                 detail.setTotalSale(rs.getFloat("totalSale"));
                 list.add(detail);
             }
-            return list;
         }catch (Exception e){
             System.out.println(e);
+        }finally {
             conexion.closeConection();
-            return list;
         }
-
+        return list;
     }
 }
